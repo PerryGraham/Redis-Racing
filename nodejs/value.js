@@ -8,3 +8,7 @@ client.on('connect', function() {
 client.set('poopypants', 'lol', function(err, reply) {
     console.log(reply);
   });
+
+console.log(client.get('poopypants', function(err, reply) {
+    console.log(reply);
+}));
