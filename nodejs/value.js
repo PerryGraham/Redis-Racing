@@ -5,4 +5,6 @@ client.on('connect', function() {
     console.log('connected');
 });
 
-client.set('poopypants', 'lol');
+client.set('poopypants', 'lol', function(err, reply) {
+    console.log(reply);
+  });
