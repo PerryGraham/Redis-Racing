@@ -16,6 +16,7 @@ let
     password  : process.env.PASSWORD,    // replace with your password
   });
 
+console.log(client.get('pepe'));
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

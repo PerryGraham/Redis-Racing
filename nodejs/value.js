@@ -1,14 +1,15 @@
+require('dotenv').config();
 var redis = require('redis');
-var client = redis.createClient(12282, process.env.HOST); 
+var client = redis.createClient({port:12282, host:process.env.HOST, password:process.env.PASSWORD}); 
 
 client.on('connect', function() {
     console.log('connected');
 });
 
-client.set('poopypants', 'lol', function(err, reply) {
+client.set('car', 'fast', function(err, reply) {
     console.log(reply);
   });
 
-console.log(client.get('poopypants', function(err, reply) {
+console.log(client.get('car', function(err, reply) {
     console.log(reply);
 }));
