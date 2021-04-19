@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 9.400001
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -213,6 +213,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2070556542, guid: ecb0e028182836646a641d3d26c0dc71, type: 3}
+      propertyPath: maxSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2070556542, guid: ecb0e028182836646a641d3d26c0dc71, type: 3}
+      propertyPath: minSpeed
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2070556542, guid: ecb0e028182836646a641d3d26c0dc71, type: 3}
+      propertyPath: moveSpeed
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3218208696232475452, guid: ecb0e028182836646a641d3d26c0dc71, type: 3}
       propertyPath: m_Name
       value: Car
