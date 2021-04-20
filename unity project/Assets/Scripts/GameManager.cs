@@ -5,6 +5,9 @@ using UnityEngine.Networking;
 
 public class GameManager : MonoBehaviour
 {
+
+    PlayerMovement[] players;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +43,15 @@ IEnumerator PostPlayerData(string url, string json)
     	else
     	{
     	    Debug.Log("Received: " + uwr.downloadHandler.text);
+            Players playersJson = JsonUtility.FromJson<Players>(uwr.downloadHandler.text);
+            foreach (PlayerMovement player in players) {
+                foreach (PlayerData player2 in playersJson) {
+                    if (player.name == player2.name) {
+                        player.UpdatePosRot(new Vector3 (player2.xPos, player2.yPos, 0), player2.zRot);
+                    }
+                }
+            }
+
     	}
 	}
 
@@ -47,5 +59,9 @@ IEnumerator PostPlayerData(string url, string json)
         public float xPos;
         public float yPos;
         public float zRot;
+        public string name;
+    }
+    private class Players {
+        PlayerData[] players;
     }
 }

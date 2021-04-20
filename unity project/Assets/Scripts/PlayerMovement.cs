@@ -9,10 +9,10 @@ public class PlayerMovement : MonoBehaviour
     float rotSpeed = 100f;
     float minSpeed = -5f;
     float maxSpeed = 10f;
-
-    public Rigidbody2D rb;
     float movement;
     float rotation;
+    public string name;
+    public Rigidbody2D rb;
 
     // Update is called once per frame
     void Update()
@@ -29,7 +29,11 @@ public class PlayerMovement : MonoBehaviour
         }
         Debug.Log(moveSpeed);
         rb.MovePosition(rb.position + new Vector2(transform.up.x, transform.up.y) * moveSpeed * Time.fixedDeltaTime);
-
         rb.MoveRotation(rb.rotation + rotSpeed * -rotation * Time.fixedDeltaTime);
+    }
+
+    public void UpdatePosRot(Vector3 pos, float rot) {
+        rb.MovePosition(pos);
+        rb.MoveRotation(rot);
     }
 }
