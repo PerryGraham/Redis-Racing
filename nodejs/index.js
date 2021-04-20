@@ -1,11 +1,10 @@
 require('dotenv').config();
 const express = require('express')
-const app = express()
+const app = express();
 const port = 80
+// const posrouter = express.Router();
 
-app.get('/', (req, res) => {
-  res.send('hi')
-})
+// app.use("/updatepos", posrouter)
 
 let
   redis     = require('redis'),
@@ -16,7 +15,19 @@ let
     password  : process.env.PASSWORD,    // replace with your password
   });
 
-console.log(client.get('pepe'));
+app.post("/updatepos", (req, res, next) => {
+  var myjson = req.body;
+  var myjson = JSON.parse(myJSON);
+  // console.log("hi");
+  res.send("200")
+})
+
+// app.get('/', (req, res) => {
+//   res.send('hi')
+// })
+
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

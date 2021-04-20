@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
             moveSpeed -= (moveSpeed >= 0 ? accSpeed : -accSpeed);
             moveSpeed = (moveSpeed < 0.5f && moveSpeed > -0.5f ? 0 : moveSpeed);
         }
-        Debug.Log(moveSpeed);
+        // Debug.Log(moveSpeed);
         rb.MovePosition(rb.position + new Vector2(transform.up.x, transform.up.y) * moveSpeed * Time.fixedDeltaTime);
         rb.MoveRotation(rb.rotation + rotSpeed * -rotation * Time.fixedDeltaTime);
     }

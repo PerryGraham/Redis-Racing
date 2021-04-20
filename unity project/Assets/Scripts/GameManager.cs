@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
         playerData.yPos = transform.position.y;
         playerData.zRot = transform.rotation.z;
         string json = JsonUtility.ToJson(playerData);
-        StartCoroutine(PostPlayerData("localhost", json));
+        StartCoroutine(PostPlayerData("localhost/updatepos", json));
     }
 
     // Update is called once per frame
