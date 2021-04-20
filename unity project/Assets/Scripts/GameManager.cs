@@ -45,7 +45,7 @@ IEnumerator PostPlayerData(string url, string json)
     	    Debug.Log("Received: " + uwr.downloadHandler.text);
             Players playersJson = JsonUtility.FromJson<Players>(uwr.downloadHandler.text);
             foreach (PlayerMovement player in players) {
-                foreach (PlayerData player2 in playersJson) {
+                foreach (PlayerData player2 in playersJson.players) {
                     if (player.name == player2.name) {
                         player.UpdatePosRot(new Vector3 (player2.xPos, player2.yPos, 0), player2.zRot);
                     }
@@ -62,6 +62,6 @@ IEnumerator PostPlayerData(string url, string json)
         public string name;
     }
     private class Players {
-        PlayerData[] players;
+        public PlayerData[] players;
     }
 }

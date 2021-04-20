@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     float maxSpeed = 10f;
     float movement;
     float rotation;
-    public string name;
+    public string playerName;
     public Rigidbody2D rb;
 
     // Update is called once per frame
