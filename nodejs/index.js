@@ -8,10 +8,6 @@ const port = 80
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 
-// const posrouter = express.Router();
-
-// app.use("/updatepos", posrouter)
-
 let
   redis     = require('redis'),
   /* Values are hard-coded for this example, it's usually best to bring these in via file or environment variable for production */
@@ -22,24 +18,22 @@ let
   });
 
 app.post("/updatepos", (req, res, next) => {
-  console.log(req.body)
   var myjson = req.body;
-  // var myjson = JSON.parse(myobj);
   const data = {
     xPos: myjson.xPos,
     yPos: myjson.yPos,
     zRot: myjson.zRot
   }
-  client.set("Jerry", JSON.stringify(data))
-  // res.send("200")
+  client.hset("playerpositions","Graham", JSON.stringify(data))
+  const returndata = client.hgetall("playerpositions", function (err, results) {
+    console.log(results)
+    res.send(results)
+  })
 })
 
-// app.get('/', (req, res) => {
-//   res.send('hi')
-// })
-
-
-
+app.get('/', (req, res) => {
+  res.send("hi")
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
