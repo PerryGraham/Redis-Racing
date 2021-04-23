@@ -23,7 +23,8 @@
     "express": "^4.17.1",
     "ioredis": "^4.26.0",
     "redis": "^3.1.1",
-    "redis-json": "^5.0.0"
+    "redis-json": "^5.0.0",
+    "redis-rejson": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
