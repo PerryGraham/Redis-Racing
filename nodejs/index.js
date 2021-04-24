@@ -27,6 +27,7 @@ app.post("/updatepos", (req, res, next) => {
     "xPos": myjson.xPos,
     "yPos": myjson.yPos,
     "zRot": myjson.zRot,
+    "rotDirection": myjson.rotDirection,
     "lastping": new Date()
   }
   client.json_set("players",myjson.name, JSON.stringify(data))
