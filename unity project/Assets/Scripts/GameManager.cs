@@ -1,22 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
 
 public class GameManager : MonoBehaviour
 {
 
-    PlayerMovement[] players;
-
+    List<PlayerMovement> players;
+    public GameObject carObject;
     // Start is called before the first frame update
     void Start()
     {
-        PlayerData playerData = new PlayerData();
-        playerData.xPos = transform.position.x;
-        playerData.yPos = transform.position.y;
-        playerData.zRot = transform.rotation.z;
-        string json = JsonUtility.ToJson(playerData);
-        StartCoroutine(PostPlayerData("http://localhost:80/updatepos", json));
+
     }
 
     // Update is called once per frame
@@ -25,43 +22,71 @@ public class GameManager : MonoBehaviour
         
     }
 
-IEnumerator PostPlayerData(string url, string json)
+    public void SpawnPlayer(string name) {
+        PlayerMovement car = Instantiate(carObject, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<PlayerMovement>();
+        car.playerName = name;
+        car.self = true;
+        players = new List<PlayerMovement>();
+        players.Add(car);
+        StartCoroutine(PostPlayerData("http://localhost:80/updatepos", car));
+    }
+
+IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
 	{
-		var uwr = new UnityWebRequest(url, "POST");
-		byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
-		uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
-		uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-		uwr.SetRequestHeader("Content-Type", "application/json");
+        while(true) {
+            PlayerData playerData = new PlayerData();
+            playerData.name = selfCar.playerName;
+            playerData.xPos = selfCar.transform.position.x;
+            playerData.yPos = selfCar.transform.position.y;
+            playerData.zRot = selfCar.transform.eulerAngles.z;
+            string json = JsonUtility.ToJson(playerData);
+            var uwr = new UnityWebRequest(url, "POST");
+            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+            uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
+            uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            uwr.SetRequestHeader("Content-Type", "application/json");
 
-		//Send the request then wait here until it returns
-		yield return uwr.SendWebRequest();
+            //Send the request then wait here until it returns
+            yield return uwr.SendWebRequest();
 
-    	if (uwr.result == UnityWebRequest.Result.ConnectionError)
-    	{
-        	Debug.Log("Error While Sending: " + uwr.error);
-    	}
-    	else
-    	{
-    	    Debug.Log("Received: " + uwr.downloadHandler.text);
-            // Players playersJson = JsonUtility.FromJson<Players>(uwr.downloadHandler.text);
-            // foreach (PlayerMovement player in players) {
-            //     foreach (PlayerData player2 in playersJson.players) {
-            //         if (player.name == player2.name) {
-            //             player.UpdatePosRot(new Vector3 (player2.xPos, player2.yPos, 0), player2.zRot);
-            //         }
-            //     }
-            // }
-
-    	}
+            if (uwr.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log("Error While Sending: " + uwr.error);
+            }
+            else
+            {
+                Debug.Log("Received: " + uwr.downloadHandler.text);
+                var playersJson = JsonConvert.DeserializeObject<List<PlayerData>>(uwr.downloadHandler.text);
+                foreach (PlayerData player in playersJson) {
+                    bool found = false;
+                    bool self = false;
+                    foreach (PlayerMovement player2 in players) {
+                        if (player.name == player2.playerName) {
+                            if (player2.self) {
+                                self = true;
+                                break;
+                            }
+                            player2.UpdatePosRot(new Vector3(player.xPos, player.yPos, 0), player.zRot);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found && !self) {
+                        PlayerMovement car = Instantiate(carObject, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<PlayerMovement>();
+                        players.Add(car);
+                        car.playerName = player.name;
+                        car.UpdatePosRot(new Vector3(player.xPos, player.yPos, 0), player.zRot);
+                    }
+                }
+            }
+            yield return 0;
+        }
 	}
-
+    [Serializable]
     private class PlayerData {
+        public string name;
         public float xPos;
         public float yPos;
         public float zRot;
-        public string name;
-    }
-    private class Players {
-        public PlayerData[] players;
     }
 }

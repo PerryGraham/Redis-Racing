@@ -11,8 +11,9 @@ public class PlayerMovement : MonoBehaviour
     float maxSpeed = 10f;
     float movement;
     float rotation;
-    public string playerName;
+    public string playerName = "temp";
     public Rigidbody2D rb;
+    public bool self = false;
 
     // Update is called once per frame
     void Update()
@@ -22,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void FixedUpdate() {
+        if (!self) { return; }
         moveSpeed = Mathf.Clamp(accSpeed * movement + moveSpeed, minSpeed, maxSpeed);
         if (movement == 0) {
             moveSpeed -= (moveSpeed >= 0 ? accSpeed : -accSpeed);
