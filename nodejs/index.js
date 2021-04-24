@@ -30,7 +30,7 @@ app.post("/updatepos", (req, res, next) => {
     "lastping": new Date()
   }
   client.json_set("players",myjson.name, JSON.stringify(data))
-  const returndata = client.json_get("players", function (err, results) {
+  client.json_get("players", function (err, results) {
     res.send(Object.values(JSON.parse(results)))
   })
 })
@@ -38,6 +38,26 @@ app.post("/updatepos", (req, res, next) => {
 app.get('/', (req, res) => {
   res.send("hi")
 })
+
+function autoremoveplayer(){
+  client.json_get("players", function (err, results) {
+    const playerdata = Object.values(JSON.parse(results))
+    playerdata.forEach(function (item, index) {
+      var namepath = `.${item.name}`
+      var seconds = Math.floor((new Date() - Date.parse(item.lastping)) / 1000);
+      if (seconds > 30) {
+        client.json_del('players', namepath)
+        console.log(`Removed ${item.name}`)
+      }
+    });
+  })
+}
+
+autoremoveplayer();
+
+setInterval(function(){
+  autoremoveplayer()
+}, 15000)
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
