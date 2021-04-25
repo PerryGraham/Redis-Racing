@@ -72,7 +72,6 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
                             player2.newPos = new Vector3(player.xPos, player.yPos, 0);
                             player2.oldRot = player2.transform.rotation.eulerAngles.z;
                             player2.newRot = player.zRot;
-                            player2.rotation = player.rotDirection;
                             found = true;
                             break;
                         }
