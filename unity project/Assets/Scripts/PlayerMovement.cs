@@ -10,32 +10,47 @@ public class PlayerMovement : MonoBehaviour
     float minSpeed = -5f;
     float maxSpeed = 10f;
     float movement;
-    float rotation;
+    public float rotation;
     public string playerName = "temp";
     public Rigidbody2D rb;
     public bool self = false;
+    public Vector3 oldPos;
+    public Vector3 newPos;
+    public float oldRot;
+    public float newRot;
+    public float time = 0f;
 
     // Update is called once per frame
     void Update()
     {
-        rotation = Input.GetAxisRaw("Horizontal");
-        movement = Input.GetAxisRaw("Vertical");
+        if (self) {
+            rotation = Input.GetAxisRaw("Horizontal");
+            movement = Input.GetAxisRaw("Vertical");
+            return;
+        }
+        rb.MovePosition(Vector3.Lerp(oldPos, newPos, time / .1f));
+
+        Debug.LogError(oldRot + " " + newRot);
+        rb.MoveRotation(Quaternion.Lerp(Quaternion.Euler(0, 0, oldRot), Quaternion.Euler(0, 0, newRot), time / .1f));
+        // if (rotation == 1) {
+        //     rb.MoveRotation(Mathf.Lerp(oldRot + 360, newRot, time / .1f));
+        // }
+        // else if (rotation == -1) {
+        //     rb.MoveRotation(Mathf.Lerp(oldRot, newRot, time / .1f));
+        // }
+        time += Time.deltaTime;
     }
 
     void FixedUpdate() {
-        if (!self) { return; }
-        moveSpeed = Mathf.Clamp(accSpeed * movement + moveSpeed, minSpeed, maxSpeed);
-        if (movement == 0) {
-            moveSpeed -= (moveSpeed >= 0 ? accSpeed : -accSpeed);
-            moveSpeed = (moveSpeed < 0.5f && moveSpeed > -0.5f ? 0 : moveSpeed);
+        if (self) {
+            moveSpeed = Mathf.Clamp(accSpeed * movement + moveSpeed, minSpeed, maxSpeed);
+            if (movement == 0) {
+                moveSpeed -= (moveSpeed >= 0 ? accSpeed : -accSpeed);
+                moveSpeed = (moveSpeed < 0.5f && moveSpeed > -0.5f ? 0 : moveSpeed);
+            }
+            // Debug.Log(moveSpeed);
+            rb.MovePosition(rb.position + new Vector2(transform.up.x, transform.up.y) * moveSpeed * Time.fixedDeltaTime);
+            rb.MoveRotation(rb.rotation + rotSpeed * -rotation * Time.fixedDeltaTime);
         }
-        // Debug.Log(moveSpeed);
-        rb.MovePosition(rb.position + new Vector2(transform.up.x, transform.up.y) * moveSpeed * Time.fixedDeltaTime);
-        rb.MoveRotation(rb.rotation + rotSpeed * -rotation * Time.fixedDeltaTime);
-    }
-
-    public void UpdatePosRot(Vector3 pos, float rot) {
-        rb.MovePosition(pos);
-        rb.MoveRotation(rot);
     }
 }

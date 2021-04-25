@@ -34,11 +34,13 @@ public class GameManager : MonoBehaviour
 IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
 	{
         while(true) {
+            DateTime time = DateTime.Now;
             PlayerData playerData = new PlayerData();
             playerData.name = selfCar.playerName;
             playerData.xPos = selfCar.transform.position.x;
             playerData.yPos = selfCar.transform.position.y;
             playerData.zRot = selfCar.transform.eulerAngles.z;
+            playerData.rotDirection = (int)selfCar.rotation;
             string json = JsonUtility.ToJson(playerData);
             var uwr = new UnityWebRequest(url, "POST");
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
@@ -51,11 +53,11 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
 
             if (uwr.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.Log("Error While Sending: " + uwr.error);
+                Debug.LogError("Error While Sending: " + uwr.error);
             }
             else
             {
-                Debug.Log("Received: " + uwr.downloadHandler.text);
+                Debug.LogError("Received: " + uwr.downloadHandler.text);
                 var playersJson = JsonConvert.DeserializeObject<List<PlayerData>>(uwr.downloadHandler.text);
                 foreach (PlayerData player in playersJson) {
                     bool found = false;
@@ -66,7 +68,12 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
                                 self = true;
                                 break;
                             }
-                            player2.UpdatePosRot(new Vector3(player.xPos, player.yPos, 0), player.zRot);
+                            player2.time = 0;
+                            player2.oldPos = player2.transform.position;
+                            player2.newPos = new Vector3(player.xPos, player.yPos, 0);
+                            player2.oldRot = player2.transform.rotation.eulerAngles.z;
+                            player2.newRot = player.zRot;
+                            player2.rotation = player.rotDirection;
                             found = true;
                             break;
                         }
@@ -74,12 +81,25 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
                     if (!found && !self) {
                         PlayerMovement car = Instantiate(carObject, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<PlayerMovement>();
                         players.Add(car);
+                        car.time = 0;
                         car.playerName = player.name;
-                        car.UpdatePosRot(new Vector3(player.xPos, player.yPos, 0), player.zRot);
+                        car.oldPos = car.transform.position;
+                        car.newPos = new Vector3(player.xPos, player.yPos, 0);
+                        car.oldRot = car.transform.rotation.z;
+                        car.newRot = player.zRot;
+                        car.rotation = player.rotDirection;
                     }
                 }
             }
-            yield return 0;
+            DateTime time2 = DateTime.Now;
+            float timePassed = (float)time2.Subtract(time).TotalSeconds;
+            Debug.Log(timePassed);
+            if (timePassed > 0.1f) {
+                yield return 0;
+            }
+            else {
+                yield return new WaitForSeconds(.1f - timePassed);
+            }
         }
 	}
     [Serializable]
@@ -88,5 +108,6 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
         public float xPos;
         public float yPos;
         public float zRot;
+        public int rotDirection;
     }
 }
