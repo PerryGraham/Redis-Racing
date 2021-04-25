@@ -40,7 +40,6 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
             playerData.xPos = selfCar.transform.position.x;
             playerData.yPos = selfCar.transform.position.y;
             playerData.zRot = selfCar.transform.eulerAngles.z;
-            playerData.rotDirection = (int)selfCar.rotation;
             string json = JsonUtility.ToJson(playerData);
             var uwr = new UnityWebRequest(url, "POST");
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
@@ -87,7 +86,6 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
                         car.newPos = new Vector3(player.xPos, player.yPos, 0);
                         car.oldRot = car.transform.rotation.z;
                         car.newRot = player.zRot;
-                        car.rotation = player.rotDirection;
                     }
                 }
             }
@@ -108,6 +106,5 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
         public float xPos;
         public float yPos;
         public float zRot;
-        public int rotDirection;
     }
 }
