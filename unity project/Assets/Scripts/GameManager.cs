@@ -56,7 +56,7 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
             }
             else
             {
-                Debug.LogError("Received: " + uwr.downloadHandler.text);
+                //Debug.LogError("Received: " + uwr.downloadHandler.text);
                 var playersJson = JsonConvert.DeserializeObject<List<PlayerData>>(uwr.downloadHandler.text);
                 foreach (PlayerData player in playersJson) {
                     bool found = false;
@@ -72,6 +72,7 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
                             player2.newPos = new Vector3(player.xPos, player.yPos, 0);
                             player2.oldRot = player2.transform.rotation.eulerAngles.z;
                             player2.newRot = player.zRot;
+                            player2.lastPing = DateTime.Parse(player.lastping);
                             found = true;
                             break;
                         }
@@ -85,12 +86,13 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
                         car.newPos = new Vector3(player.xPos, player.yPos, 0);
                         car.oldRot = car.transform.rotation.z;
                         car.newRot = player.zRot;
+                        car.lastPing = DateTime.Parse(player.lastping);
+                        StartCoroutine(car.AFKCheck());
                     }
                 }
             }
             DateTime time2 = DateTime.Now;
             float timePassed = (float)time2.Subtract(time).TotalSeconds;
-            Debug.Log(timePassed);
             if (timePassed > 0.1f) {
                 yield return 0;
             }
@@ -105,5 +107,6 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
         public float xPos;
         public float yPos;
         public float zRot;
+        public string lastping;
     }
 }
