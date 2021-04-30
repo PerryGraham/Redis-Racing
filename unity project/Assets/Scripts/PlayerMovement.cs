@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
     public float newRot;
     public float time = 0f;
     public DateTime lastPing;
+    public float timer = 0f;
+    public bool isRacing;
 
     // Update is called once per frame
     void Update()
@@ -63,5 +65,16 @@ public class PlayerMovement : MonoBehaviour
                 yield return new WaitForSeconds(30);
             }
         }
+    }
+    
+    public IEnumerator StartTimer() {
+        while(isRacing) {
+            timer += Time.deltaTime;
+            yield return 0;
+        }
+    }
+
+    public void ResetTimer() {
+        timer = 0f;
     }
 }

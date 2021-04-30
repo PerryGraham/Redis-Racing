@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
         players = new List<PlayerMovement>();
         players.Add(car);
         cam.car = car.transform;
+        car.isRacing = true;
+        StartCoroutine(car.StartTimer());
         StartCoroutine(PostPlayerData("http://localhost:80/updatepos", car));
     }
 
@@ -85,11 +87,10 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
             if (timePassed < .1f) {
                 yield return new WaitForSeconds(.1f - timePassed);
             }
-            Debug.Log(DateTime.Now.Subtract(time).TotalSeconds);
         }
 	}
     [Serializable]
-    private class PlayerData {
+    class PlayerData {
         public string name;
         public float xPos;
         public float yPos;
