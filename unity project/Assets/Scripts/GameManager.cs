@@ -82,12 +82,10 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
             }
             DateTime time2 = DateTime.Now;
             float timePassed = (float)time2.Subtract(time).TotalSeconds;
-            if (timePassed > 0.1f) {
-                yield return 0;
-            }
-            else {
+            if (timePassed < .1f) {
                 yield return new WaitForSeconds(.1f - timePassed);
             }
+            Debug.Log(DateTime.Now.Subtract(time).TotalSeconds);
         }
 	}
     [Serializable]

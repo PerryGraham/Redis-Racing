@@ -22,10 +22,6 @@ public class PlayerMovement : MonoBehaviour
     public float time = 0f;
     public DateTime lastPing;
 
-    void Start() {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -34,9 +30,6 @@ public class PlayerMovement : MonoBehaviour
             movement = Input.GetAxisRaw("Vertical");
             return;
         }
-        rb.MovePosition(Vector3.Lerp(oldPos, newPos, time / .1f));
-        rb.MoveRotation(Quaternion.Lerp(Quaternion.Euler(0, 0, oldRot), Quaternion.Euler(0, 0, newRot), time / .1f));
-        time += Time.deltaTime;
     }
 
     void FixedUpdate() {
@@ -48,6 +41,11 @@ public class PlayerMovement : MonoBehaviour
             }
             rb.MovePosition(rb.position + new Vector2(transform.up.x, transform.up.y) * moveSpeed * Time.fixedDeltaTime);
             rb.MoveRotation(rb.rotation + rotSpeed * -rotation * Time.fixedDeltaTime);
+        }
+        else {
+            time += Time.fixedDeltaTime;
+            rb.MovePosition(Vector3.Lerp(oldPos, newPos, time / .1f));
+            rb.MoveRotation(Quaternion.Lerp(Quaternion.Euler(0, 0, oldRot), Quaternion.Euler(0, 0, newRot), time / .1f));
         }
     }
 
