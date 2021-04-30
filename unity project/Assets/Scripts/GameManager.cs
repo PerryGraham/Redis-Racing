@@ -7,27 +7,16 @@ using Newtonsoft.Json;
 
 public class GameManager : MonoBehaviour
 {
-
     List<PlayerMovement> players;
     public GameObject carObject;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    public FollowCamera cam;
     public void SpawnPlayer(string name) {
         PlayerMovement car = Instantiate(carObject, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<PlayerMovement>();
         car.playerName = name;
         car.self = true;
         players = new List<PlayerMovement>();
         players.Add(car);
+        cam.car = car.transform;
         StartCoroutine(PostPlayerData("http://localhost:80/updatepos", car));
     }
 

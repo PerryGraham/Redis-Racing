@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public Transform car;
+    public Vector3 cameraOffset;
+    float smoothSpeed = 5f;
+    void LateUpdate() {
+        if (!car) { return; }
+        transform.position = Vector3.Lerp(transform.position, car.transform.position + cameraOffset, smoothSpeed * Time.deltaTime);
     }
 }
