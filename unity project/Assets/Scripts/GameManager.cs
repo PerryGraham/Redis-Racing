@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public FollowCamera cam;
     public void SpawnPlayer(string name) {
         PlayerMovement car = Instantiate(carObject, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<PlayerMovement>();
-        car.playerName = name;
+        car.SetName(name);
         car.self = true;
         players = new List<PlayerMovement>();
         players.Add(car);
@@ -72,7 +72,7 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
                         PlayerMovement car = Instantiate(carObject, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<PlayerMovement>();
                         players.Add(car);
                         car.time = 0;
-                        car.playerName = player.name;
+                        car.SetName(player.name);
                         car.oldPos = car.transform.position;
                         car.newPos = new Vector3(player.xPos, player.yPos, 0);
                         car.oldRot = car.transform.rotation.z;

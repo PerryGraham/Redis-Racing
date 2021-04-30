@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class PlayerMovement : MonoBehaviour
@@ -23,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     public DateTime lastPing;
     public float timer = 0f;
     public bool isRacing;
+    public Text namePlate;
 
     // Update is called once per frame
     void Update()
@@ -76,5 +78,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void ResetTimer() {
         timer = 0f;
+    }
+
+    public void SetName(string name) {
+        playerName = name;
+        namePlate.text = playerName;
     }
 }
