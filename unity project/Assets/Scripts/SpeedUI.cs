@@ -8,6 +8,6 @@ public class SpeedUI : MonoBehaviour
     public Text text;
     
     public void SetSpeed(float speed) {
-        text.text = Mathf.Round(speed * 10).ToString();
+        text.text = Mathf.Abs(Mathf.Round(speed * 10)).ToString();
     }
 }
