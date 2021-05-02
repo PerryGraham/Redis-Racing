@@ -7,10 +7,10 @@ using System;
 public class PlayerMovement : MonoBehaviour
 {
     float moveSpeed = 0f;
-    float accSpeed = .1f;
+    float accSpeed = .05f;
     float rotSpeed = 100f;
     float minSpeed = -5f;
-    float maxSpeed = 10f;
+    float maxSpeed = 15f;
     float movement;
     public float rotation;
     public string playerName = "temp";
@@ -24,7 +24,9 @@ public class PlayerMovement : MonoBehaviour
     public DateTime lastPing;
     public float timer = 0f;
     public bool isRacing;
-    public Text namePlate;
+    public NameUI nameUI;
+    public SpeedUI speedUI;
+    public TimerUI timerUI;
 
     // Update is called once per frame
     void Update()
@@ -43,8 +45,14 @@ public class PlayerMovement : MonoBehaviour
                 moveSpeed -= (moveSpeed >= 0 ? accSpeed : -accSpeed);
                 moveSpeed = (moveSpeed < 0.5f && moveSpeed > -0.5f ? 0 : moveSpeed);
             }
+            // Only allow rotation if the player is moving
+            if (moveSpeed > 0 || moveSpeed < 0) {
+                rb.MoveRotation(rb.rotation + rotSpeed * -rotation * Time.fixedDeltaTime);
+            }
             rb.MovePosition(rb.position + new Vector2(transform.up.x, transform.up.y) * moveSpeed * Time.fixedDeltaTime);
-            rb.MoveRotation(rb.rotation + rotSpeed * -rotation * Time.fixedDeltaTime);
+
+            // Update speed UI
+            speedUI.SetSpeed(moveSpeed);
         }
         else {
             time += Time.fixedDeltaTime;
@@ -72,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator StartTimer() {
         while(isRacing) {
             timer += Time.deltaTime;
+            timerUI.SetTime(timer);
             yield return 0;
         }
     }
@@ -82,6 +91,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetName(string name) {
         playerName = name;
-        namePlate.text = playerName;
-    }
+        nameUI.SetName(name);
+        }
 }
