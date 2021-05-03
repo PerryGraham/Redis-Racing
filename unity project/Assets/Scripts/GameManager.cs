@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public FollowCamera cam;
     public Transform spawnPoint;
     public LeaderboardUI leaderboardUI;
+    public Material ghostMat;
     public void SpawnPlayer(string name) {
         PlayerMovement car = Instantiate(carObject, spawnPoint.position, spawnPoint.transform.rotation).GetComponent<PlayerMovement>();
         car.SetName(name);
@@ -90,6 +91,9 @@ public class GameManager : MonoBehaviour
                         car.newRot = player.zRot;
                         car.lastPing = DateTime.Parse(player.lastping);
                         StartCoroutine(car.AFKCheck());
+
+                        // Set material to ghost
+                        car.GetComponent<SpriteRenderer>().material = ghostMat;
                     }
                 }
             }

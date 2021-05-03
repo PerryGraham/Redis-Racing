@@ -16160,6 +16160,7 @@ MonoBehaviour:
   cam: {fileID: 519420030}
   spawnPoint: {fileID: 39642328}
   leaderboardUI: {fileID: 758434450}
+  ghostMat: {fileID: 2100000, guid: c93880bad8bd60543af849b95b73728a, type: 2}
 --- !u!4 &1452863851
 Transform:
   m_ObjectHideFlags: 0
