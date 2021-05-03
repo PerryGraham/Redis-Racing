@@ -76,12 +76,10 @@ public class PlayerMovement : MonoBehaviour
         while(!isAFK) {
             if (lastPing.AddSeconds(30) < DateTime.Now) {
                 isAFK = true;
-                Debug.Log("Destroy");
                 Destroy(gameObject);
 
             }
             else {
-                Debug.Log("No");
                 yield return new WaitForSeconds(30);
             }
         }
@@ -96,7 +94,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void ResetTimer() {
-        StopCoroutine(timerCoroutine);
         timer = 0f;
         }
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1383007892530835010}
   - component: {fileID: 1383007892530835009}
   - component: {fileID: 1333646536513782247}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &1383007892530835009
 MonoBehaviour:
@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 808b19ce6ee19214ebf2cd1b2a6ed1cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 0
   rotation: 0
   playerName: temp
   rb: {fileID: 1383007892530835010}

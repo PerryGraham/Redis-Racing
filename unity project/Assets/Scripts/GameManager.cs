@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour
     public GameObject carObject;
     public FollowCamera cam;
     public Transform spawnPoint;
+    public LeaderboardUI leaderboardUI;
     public void SpawnPlayer(string name) {
         PlayerMovement car = Instantiate(carObject, spawnPoint.position, spawnPoint.transform.rotation).GetComponent<PlayerMovement>();
         car.SetName(name);
@@ -24,6 +26,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void RestartPlayer(PlayerMovement car) {
+        StopCoroutine(car.timerCoroutine);
         car.moveSpeed = 0;
         car.transform.position = spawnPoint.transform.position;
         car.transform.rotation = spawnPoint.transform.rotation;
@@ -31,8 +34,7 @@ public class GameManager : MonoBehaviour
         car.timerCoroutine = StartCoroutine(car.StartTimer());
     }
 
-IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
-	{
+    IEnumerator PostPlayerData(string url, PlayerMovement selfCar) {
         while(selfCar) {
             DateTime time = DateTime.Now;
             PlayerData playerData = new PlayerData();
@@ -52,7 +54,7 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
 
             if (uwr.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.LogError("Error While Sending: " + uwr.error);
+                Debug.Log("Error While Sending: " + uwr.error);
             }
             else
             {
@@ -98,7 +100,25 @@ IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
             }
         }
 	}
-    [Serializable]
+    public IEnumerator GetLeaderboardData(string url) {
+        var uwr = new UnityWebRequest(url, "GET");
+        uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        yield return uwr.SendWebRequest();
+
+        if (uwr.result == UnityWebRequest.Result.ConnectionError) {
+            Debug.Log("Error While Sending: " + uwr.error);
+        }
+        else {
+            Debug.Log(uwr.downloadHandler.text);
+            JsonToLeaderboard(uwr.downloadHandler.text);
+        }
+    }
+    public void JsonToLeaderboard(string json) {
+        Debug.Log(json);
+        var leaderboard = JsonConvert.DeserializeObject<List<LeaderboardData>>(json);
+        leaderboard = leaderboard.OrderBy(p => p.laptime).ToList();
+        leaderboardUI.UpdateLeaderboard(leaderboard);
+    }
     class PlayerData {
         public string name;
         public float xPos;
