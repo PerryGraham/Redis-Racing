@@ -10,8 +10,9 @@ public class GameManager : MonoBehaviour
     List<PlayerMovement> players;
     public GameObject carObject;
     public FollowCamera cam;
+    public Transform spawnPoint;
     public void SpawnPlayer(string name) {
-        PlayerMovement car = Instantiate(carObject, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<PlayerMovement>();
+        PlayerMovement car = Instantiate(carObject, spawnPoint.position, spawnPoint.transform.rotation).GetComponent<PlayerMovement>();
         car.SetName(name);
         car.self = true;
         players = new List<PlayerMovement>();
@@ -22,9 +23,17 @@ public class GameManager : MonoBehaviour
         StartCoroutine(PostPlayerData("http://localhost:80/updatepos", car));
     }
 
+    public void RestartPlayer(PlayerMovement car) {
+        car.moveSpeed = 0;
+        car.transform.position = spawnPoint.transform.position;
+        car.transform.rotation = spawnPoint.transform.rotation;
+        car.isRacing = true;
+        StartCoroutine(car.StartTimer());
+    }
+
 IEnumerator PostPlayerData(string url, PlayerMovement selfCar)
 	{
-        while(true) {
+        while(selfCar) {
             DateTime time = DateTime.Now;
             PlayerData playerData = new PlayerData();
             playerData.name = selfCar.playerName;

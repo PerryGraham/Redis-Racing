@@ -6,7 +6,7 @@ using System;
 
 public class PlayerMovement : MonoBehaviour
 {
-    float moveSpeed = 0f;
+    public float moveSpeed = 0f;
     float accSpeed = .05f;
     float rotSpeed = 100f;
     float minSpeed = -5f;
@@ -27,6 +27,11 @@ public class PlayerMovement : MonoBehaviour
     public NameUI nameUI;
     public SpeedUI speedUI;
     public TimerUI timerUI;
+    GameManager gameManager;
+
+    void Start() {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -34,6 +39,10 @@ public class PlayerMovement : MonoBehaviour
         if (self) {
             rotation = Input.GetAxisRaw("Horizontal");
             movement = Input.GetAxisRaw("Vertical");
+
+            if (Input.GetButtonDown("Restart")) {
+                Restart();
+            }
             return;
         }
     }
@@ -93,4 +102,7 @@ public class PlayerMovement : MonoBehaviour
         playerName = name;
         nameUI.SetName(name);
         }
+    void Restart() {
+        gameManager.RestartPlayer(this);
+    }
 }
