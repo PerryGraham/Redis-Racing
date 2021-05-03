@@ -20,25 +20,9 @@ let
     password  : process.env.PASSWORD,    // replace with your password
   });
 
-app.post("/updatepos", (req, res, next) => {
-  var myjson = req.body;
-  const data = {
-    "name": myjson.name,
-    "xPos": myjson.xPos,
-    "yPos": myjson.yPos,
-    "zRot": myjson.zRot,
-    "rotDirection": myjson.rotDirection,
-    "lastping": new Date()
-  }
-  client.json_set("players",myjson.name, JSON.stringify(data))
-  client.json_get("players", function (err, results) {
-    res.send(Object.values(JSON.parse(results)))
-  })
-})
-
-app.get('/', (req, res) => {
-  res.send("hi")
-})
+require('./updatepos.js')(app,client);
+require('./updatelaptime.js')(app,client);
+require('./getleaderboard.js')(app, client);
 
 function autoremoveplayer(){
   client.json_get("players", function (err, results) {
@@ -48,6 +32,7 @@ function autoremoveplayer(){
       var seconds = Math.floor((new Date() - Date.parse(item.lastping)) / 1000);
       if (seconds > 30) {
         client.json_del('players', namepath)
+        client.json_del('leaderboard', namepath)
         console.log(`Removed ${item.name}`)
       }
     });
