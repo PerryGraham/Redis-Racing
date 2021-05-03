@@ -14,7 +14,7 @@ public class Finish : MonoBehaviour
         finishData.name = player.playerName;
         finishData.time = player.timer;
         StartCoroutine(SendTime("http://localhost:80/finish", finishData));
-        player.ResetTimer();
+        player.Restart();
     }
     
     IEnumerator SendTime(string url, FinishData finishData) {

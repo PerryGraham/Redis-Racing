@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         players.Add(car);
         cam.car = car.transform;
         car.isRacing = true;
-        StartCoroutine(car.StartTimer());
+        car.timerCoroutine = StartCoroutine(car.StartTimer());
         StartCoroutine(PostPlayerData("http://localhost:80/updatepos", car));
     }
 
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
         car.transform.position = spawnPoint.transform.position;
         car.transform.rotation = spawnPoint.transform.rotation;
         car.isRacing = true;
-        StartCoroutine(car.StartTimer());
+        car.timerCoroutine = StartCoroutine(car.StartTimer());
     }
 
 IEnumerator PostPlayerData(string url, PlayerMovement selfCar)

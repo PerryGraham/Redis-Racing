@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public NameUI nameUI;
     public SpeedUI speedUI;
     public TimerUI timerUI;
+    public Coroutine timerCoroutine;
     GameManager gameManager;
 
     void Start() {
@@ -95,14 +96,16 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void ResetTimer() {
+        StopCoroutine(timerCoroutine);
         timer = 0f;
-    }
+        }
 
     public void SetName(string name) {
         playerName = name;
         nameUI.SetName(name);
         }
-    void Restart() {
+    public void Restart() {
+        ResetTimer();
         gameManager.RestartPlayer(this);
     }
 }
