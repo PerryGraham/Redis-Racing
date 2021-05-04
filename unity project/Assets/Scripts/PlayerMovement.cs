@@ -71,6 +71,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void OnCollisionStay2D(Collision2D col) {
+        moveSpeed = moveSpeed / 1.05f;
+    }
+
     public IEnumerator AFKCheck() {
         bool isAFK = false;
         while(!isAFK) {
