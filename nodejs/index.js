@@ -28,7 +28,7 @@ function autoremoveplayer(){
   client.json_get("players", function (err, results) {
     const playerdata = Object.values(JSON.parse(results))
     playerdata.forEach(function (item, index) {
-      var namepath = `.${item.name}`
+      var namepath = `._${item.name}`
       var seconds = Math.floor((new Date() - Date.parse(item.lastping)) / 1000);
       if (seconds > 30) {
         client.json_del('players', namepath)

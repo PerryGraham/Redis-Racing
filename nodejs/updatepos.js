@@ -10,7 +10,8 @@ module.exports = function(app,client){
         "zRot": myjson.zRot,
         "lastping": new Date()
         }
-        client.json_set("players",myjson.name, JSON.stringify(data))
+        const namekey = `_${myjson.name}`
+        client.json_set("players",namekey, JSON.stringify(data))
         client.json_get("players", function (err, results) {
             res.send(Object.values(JSON.parse(results)))
         })
