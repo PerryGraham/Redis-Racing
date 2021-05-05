@@ -7,10 +7,11 @@ using System;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 0f;
-    float accSpeed = .05f;
+    float accSpeed = 2.5f;
     float rotSpeed = 100f;
-    float minSpeed = -5f;
-    float maxSpeed = 15f;
+    //float minSpeed = -5f;
+    //float maxSpeed = 15f;
+    float driftAmount = .1f;
     float movement;
     public float rotation;
     public string playerName = "temp";
@@ -23,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     public float time = 0f;
     public DateTime lastPing;
     public float timer = 0f;
+    float turnTime = 0f;
     public bool isRacing;
     public NameUI nameUI;
     public SpeedUI speedUI;
@@ -41,38 +43,40 @@ public class PlayerMovement : MonoBehaviour
             rotation = Input.GetAxisRaw("Horizontal");
             movement = Input.GetAxisRaw("Vertical");
 
+            if (Input.GetButtonDown("Horizontal")) {
+                turnTime = Time.time;
+            }
+            if (Input.GetButtonUp("Horizontal")) {
+                turnTime = 0;
+            }
+
             if (Input.GetButtonDown("Restart")) {
                 Restart();
             }
+
             return;
         }
     }
 
     void FixedUpdate() {
         if (self) {
-            moveSpeed = Mathf.Clamp(accSpeed * movement + moveSpeed, minSpeed, maxSpeed);
-            if (movement == 0) {
-                moveSpeed -= (moveSpeed >= 0 ? accSpeed : -accSpeed);
-                moveSpeed = (moveSpeed < 0.5f && moveSpeed > -0.5f ? 0 : moveSpeed);
+            if (rb.velocity.magnitude < 15f) {
+                rb.AddForce(transform.up * accSpeed * movement);
             }
-            // Only allow rotation if the player is moving
-            if (moveSpeed > 0 || moveSpeed < 0) {
-                rb.MoveRotation(rb.rotation + rotSpeed * -rotation * Time.fixedDeltaTime);
-            }
-            rb.MovePosition(rb.position + new Vector2(transform.up.x, transform.up.y) * moveSpeed * Time.fixedDeltaTime);
+
+            rb.velocity = ForwardVelocity() + RightVelocity() * driftAmount;
+
+            float angularVel = Mathf.Lerp(0, rotSpeed, rb.velocity.magnitude / 3);
+            rb.angularVelocity = rotation * -angularVel;
 
             // Update speed UI
-            speedUI.SetSpeed(moveSpeed);
+            speedUI.SetSpeed(rb.velocity.magnitude);
         }
         else {
             time += Time.fixedDeltaTime;
             rb.MovePosition(Vector3.Lerp(oldPos, newPos, time / .1f));
             rb.MoveRotation(Quaternion.Lerp(Quaternion.Euler(0, 0, oldRot), Quaternion.Euler(0, 0, newRot), time / .1f));
         }
-    }
-
-    void OnCollisionStay2D(Collision2D col) {
-        moveSpeed = moveSpeed / 1.05f;
     }
 
     public IEnumerator AFKCheck() {
@@ -108,5 +112,11 @@ public class PlayerMovement : MonoBehaviour
     public void Restart() {
         ResetTimer();
         gameManager.RestartPlayer(this);
+    }
+    Vector2 ForwardVelocity() {
+        return transform.up * Vector2.Dot(rb.velocity, transform.up);
+    }
+    Vector2 RightVelocity() {
+        return transform.right * Vector2.Dot(rb.velocity, transform.right);
     }
 }

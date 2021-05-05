@@ -11,6 +11,6 @@ public class FollowCamera : MonoBehaviour
     void LateUpdate() {
         if (!car) { return; }
         transform.position = Vector3.Lerp(transform.position, car.transform.position + cameraOffset, positionSpeed * Time.deltaTime);
-        transform.rotation = Quaternion.Lerp(transform.rotation, car.rotation, rotationSpeed * Time.deltaTime);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, car.rotation, rotationSpeed * Time.deltaTime);
     }
 }
