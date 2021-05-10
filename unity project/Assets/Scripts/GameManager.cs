@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
             var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(uwr.downloadHandler.text);
             if (loginResponse.success) {
                 SpawnPlayer(loginResponse.name);
+                startUI.gameObject.SetActive(false);
             }
             else {
                 Debug.Log(loginResponse.message);
