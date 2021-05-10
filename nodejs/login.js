@@ -28,6 +28,13 @@ module.exports = function (app, client) {
                     "message" : "Username can not contain spaces"
                 }
             }
+            if (!myjson.name) {
+                response = {
+                    "name" : myjson.name,
+                    "success" : false, 
+                    "message" : "Username can not be empty"
+                }
+            }
             res.send(response)
         })
     })
