@@ -23,6 +23,7 @@ let
 require('./updatepos.js')(app,client);
 require('./updatelaptime.js')(app,client);
 require('./getleaderboard.js')(app, client);
+require('./login.js')(app,client);
 
 function autoremoveplayer(){
   client.json_get("players", function (err, results) {
