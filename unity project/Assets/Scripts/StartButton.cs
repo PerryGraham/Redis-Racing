@@ -21,7 +21,6 @@ public class StartButton : MonoBehaviour
     }
 
     public void onClick() {
-        gameManager.SpawnPlayer(textBox.text);
-        startPanel.SetActive(false);
+        StartCoroutine(gameManager.Login(textBox.text, "http://localhost:80/login"));
     }
 }

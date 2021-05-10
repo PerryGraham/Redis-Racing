@@ -14,6 +14,34 @@ public class GameManager : MonoBehaviour
     public Transform spawnPoint;
     public LeaderboardUI leaderboardUI;
     public Material ghostMat;
+    public StartButton startUI;
+
+    public IEnumerator Login(string name, string url) {
+        string json = "{\"name\":\"" + name + "\"}";
+        var uwr = new UnityWebRequest(url, "POST");
+        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+        uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
+        uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        uwr.SetRequestHeader("Content-Type", "application/json");
+
+        //Send the request then wait here until it returns
+        yield return uwr.SendWebRequest();
+
+        if (uwr.result == UnityWebRequest.Result.ConnectionError)
+        {
+            Debug.Log("Error While Sending: " + uwr.error);
+        }
+        else
+        {
+            var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(uwr.downloadHandler.text);
+            if (loginResponse.success) {
+                SpawnPlayer(loginResponse.name);
+            }
+            else {
+                Debug.Log(loginResponse.message);
+            }
+        }
+    }
     public void SpawnPlayer(string name) {
         PlayerMovement car = Instantiate(carObject, spawnPoint.position, spawnPoint.transform.rotation).GetComponent<PlayerMovement>();
         car.SetName(name);
@@ -129,5 +157,11 @@ public class GameManager : MonoBehaviour
         public float yPos;
         public float zRot;
         public string lastping;
+    }
+
+    class LoginResponse {
+        public string name;
+        public bool success;
+        public string message;
     }
 }
