@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public LeaderboardUI leaderboardUI;
     public Material ghostMat;
     public StartButton startUI;
+    public Canvas canvas;
+    public GameObject popupbox;
 
     public IEnumerator Login(string name, string url) {
         string json = "{\"name\":\"" + name + "\"}";
@@ -29,7 +31,10 @@ public class GameManager : MonoBehaviour
 
         if (uwr.result == UnityWebRequest.Result.ConnectionError)
         {
-            Debug.Log("Error While Sending: " + uwr.error);
+            //Debug.Log("Error While Sending: " + uwr.error);
+            Popup popupBox = Instantiate(popupbox).GetComponent<Popup>();
+            popupBox.transform.SetParent(canvas.transform, false);
+            popupBox.SetText("Cannot connect to the game server. Please try again later.");
         }
         else
         {
@@ -39,7 +44,9 @@ public class GameManager : MonoBehaviour
                 startUI.startPanel.SetActive(false);
             }
             else {
-                Debug.Log(loginResponse.message);
+                Popup popupBox = Instantiate(popupbox).GetComponent<Popup>();
+                popupBox.transform.SetParent(canvas.transform, false);
+                popupBox.SetText(loginResponse.message);
             }
         }
     }
@@ -57,7 +64,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartPlayer(PlayerMovement car) {
         StopCoroutine(car.timerCoroutine);
-        car.moveSpeed = 0;
+        car.rb.velocity = new Vector2(0,0);
         car.transform.position = spawnPoint.transform.position;
         car.transform.rotation = spawnPoint.transform.rotation;
         car.isRacing = true;
