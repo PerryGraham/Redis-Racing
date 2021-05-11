@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartPlayer(PlayerMovement car) {
         StopCoroutine(car.timerCoroutine);
-        car.moveSpeed = 0;
+        car.rb.velocity = new Vector2(0,0);
         car.transform.position = spawnPoint.transform.position;
         car.transform.rotation = spawnPoint.transform.rotation;
         car.isRacing = true;
