@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
         car.self = true;
         players = new List<PlayerMovement>();
         players.Add(car);
-        cam.car = car.transform;
+        cam.car = car;
         car.isRacing = true;
         car.timerCoroutine = StartCoroutine(car.StartTimer());
         StartCoroutine(PostPlayerData("http://localhost:80/updatepos", car));
@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
         car.rb.velocity = new Vector2(0,0);
         car.transform.position = spawnPoint.transform.position;
         car.transform.rotation = spawnPoint.transform.rotation;
+        cam.transform.position = car.transform.position;
         car.isRacing = true;
         car.timerCoroutine = StartCoroutine(car.StartTimer());
     }

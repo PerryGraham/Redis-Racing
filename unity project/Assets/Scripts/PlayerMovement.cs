@@ -73,12 +73,12 @@ public class PlayerMovement : MonoBehaviour
             Vector3Int trackTilePos = track.WorldToCell(transform.position);
             Tile trackTile = track.GetTile<Tile>(trackTilePos);
             if (trackTile) {
-                rb.mass = 1;
                 rb.drag = .1f;
+                driftAmount = .1f;
             }
             else {
-                rb.mass = 1;
                 rb.drag = 1f;
+                driftAmount = .95f;
             }
 
             // Update speed UI
@@ -125,10 +125,10 @@ public class PlayerMovement : MonoBehaviour
         ResetTimer();
         gameManager.RestartPlayer(this);
     }
-    Vector2 ForwardVelocity() {
+    public Vector2 ForwardVelocity() {
         return transform.up * Vector2.Dot(rb.velocity, transform.up);
     }
-    Vector2 RightVelocity() {
+    public Vector2 RightVelocity() {
         return transform.right * Vector2.Dot(rb.velocity, transform.right);
     }
 }
