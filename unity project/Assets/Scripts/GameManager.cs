@@ -17,6 +17,11 @@ public class GameManager : MonoBehaviour
     public StartButton startUI;
     public Canvas canvas;
     public GameObject popupbox;
+    public GameObject finishPanel;
+
+    void Start() {
+        players = new List<PlayerMovement>();
+    }
 
     public IEnumerator Login(string name, string url) {
         string json = "{\"name\":\"" + name + "\"}";
@@ -52,10 +57,16 @@ public class GameManager : MonoBehaviour
         }
     }
     public void SpawnPlayer(string name) {
+        // Loop through all players to check if the current user already has a car
+        foreach (PlayerMovement player in players) {
+            if (player.self) {
+                return;
+            }
+        }
+
         PlayerMovement car = Instantiate(carObject, spawnPoint.position, spawnPoint.transform.rotation).GetComponent<PlayerMovement>();
         car.SetName(name);
         car.self = true;
-        players = new List<PlayerMovement>();
         players.Add(car);
         cam.car = car;
         car.isRacing = true;
@@ -65,6 +76,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartPlayer(PlayerMovement car) {
         StopCoroutine(car.timerCoroutine);
+        finishPanel.SetActive(false);
         car.rb.velocity = new Vector2(0,0);
         car.transform.position = spawnPoint.transform.position;
         car.transform.rotation = spawnPoint.transform.rotation;
@@ -160,6 +172,11 @@ public class GameManager : MonoBehaviour
         var leaderboard = JsonConvert.DeserializeObject<List<LeaderboardData>>(json);
         leaderboard = leaderboard.OrderBy(p => p.laptime).ToList();
         leaderboardUI.UpdateLeaderboard(leaderboard);
+    }
+
+    public void Finish() {
+        finishPanel.SetActive(true);
+        StartCoroutine(finishPanel.GetComponent<FinishUI>().FadeIn());
     }
     class PlayerData {
         public string name;

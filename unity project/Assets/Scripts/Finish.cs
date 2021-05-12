@@ -13,15 +13,17 @@ public class Finish : MonoBehaviour
     {
         PlayerMovement player = col.gameObject.GetComponent<PlayerMovement>();
         if (player.self) {
-            player.isRacing = false;
-            FinishData finishData = new FinishData();
-            finishData.name = player.playerName;
-            finishData.time = player.timer;
-            StartCoroutine(SendTime("http://localhost:80/finish", finishData));
-            //player.Restart();
+            if (player.isRacing) {
+                player.isRacing = false;
+                FinishData finishData = new FinishData();
+                finishData.name = player.playerName;
+                finishData.time = player.timer;
+                StartCoroutine(SendTime("http://localhost:80/finish", finishData));
+                player.timerUI.FinishTween();
+                gameManager.Finish();
+            }
         }
         else {
-            Debug.Log("eeeeeee");
             StartCoroutine(gameManager.GetLeaderboardData("http://localhost:80/leaderboard"));
         }
     }

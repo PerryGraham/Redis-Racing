@@ -28,10 +28,14 @@ public class PlayerMovement : MonoBehaviour
     public SpeedUI speedUI;
     public TimerUI timerUI;
     public Coroutine timerCoroutine;
+    public GameObject screenSpaceCanvas;
     Tilemap track;
     GameManager gameManager;
 
     void Start() {
+        if (self) {
+            screenSpaceCanvas.SetActive(true);
+        }
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         GameObject grid = GameObject.Find("Grid");
         track = grid.transform.Find("Track").GetComponent<Tilemap>();
@@ -115,12 +119,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void ResetTimer() {
         timer = 0f;
-        }
-
+        timerUI.ResetPosition();
+    }
     public void SetName(string name) {
         playerName = name;
         nameUI.SetName(name);
-        }
+    }
     public void Restart() {
         ResetTimer();
         gameManager.RestartPlayer(this);
