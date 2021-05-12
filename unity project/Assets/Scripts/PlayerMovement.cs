@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 0f;
     float accSpeed = 2.5f;
     float rotSpeed = 100f;
-    //float minSpeed = -5f;
-    //float maxSpeed = 15f;
     float driftAmount = .1f;
     float movement;
     public float rotation;
@@ -30,10 +28,13 @@ public class PlayerMovement : MonoBehaviour
     public SpeedUI speedUI;
     public TimerUI timerUI;
     public Coroutine timerCoroutine;
+    Tilemap track;
     GameManager gameManager;
 
     void Start() {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        GameObject grid = GameObject.Find("Grid");
+        track = grid.transform.Find("Track").GetComponent<Tilemap>();
     }
 
     // Update is called once per frame
@@ -68,6 +69,17 @@ public class PlayerMovement : MonoBehaviour
 
             float angularVel = Mathf.Lerp(0, rotSpeed, rb.velocity.magnitude / 3);
             rb.angularVelocity = rotation * -angularVel;
+
+            Vector3Int trackTilePos = track.WorldToCell(transform.position);
+            Tile trackTile = track.GetTile<Tile>(trackTilePos);
+            if (trackTile) {
+                rb.mass = 1;
+                rb.drag = .1f;
+            }
+            else {
+                rb.mass = 1;
+                rb.drag = 1f;
+            }
 
             // Update speed UI
             speedUI.SetSpeed(rb.velocity.magnitude);

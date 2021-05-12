@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
             Popup popupBox = Instantiate(popupbox).GetComponent<Popup>();
             popupBox.transform.SetParent(canvas.transform, false);
             popupBox.SetText("Cannot connect to the game server. Please try again later.");
+            SpawnPlayer("yes");
         }
         else
         {

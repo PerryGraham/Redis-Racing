@@ -120,7 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 808b19ce6ee19214ebf2cd1b2a6ed1cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
   rotation: 0
   playerName: temp
   rb: {fileID: 1383007892530835010}
@@ -135,7 +134,23 @@ MonoBehaviour:
   nameUI: {fileID: 4532696167834956315}
   speedUI: {fileID: 2973522988373905774}
   timerUI: {fileID: 8650736580845387190}
-  skidmark: {fileID: 4302250251496158740, guid: e8a8d0c4ab29cb647b142416f39e2d80, type: 3}
+  slowTiles:
+  - {fileID: 11400000, guid: 47c28a4e794499e4f92577369a2f6747, type: 2}
+  - {fileID: 11400000, guid: 6a7b50f2d9b6d1347b6613ed31658475, type: 2}
+  - {fileID: 11400000, guid: 72ce41ee99743b8498bfb9eed219121d, type: 2}
+  - {fileID: 11400000, guid: cc88fd30ad7387f43a15f97c2658a174, type: 2}
+  - {fileID: 11400000, guid: 6877a040be61d0443b10e4b5338cef59, type: 2}
+  - {fileID: 11400000, guid: f40823b50d139444dba035e37f16eb18, type: 2}
+  - {fileID: 11400000, guid: e0f900def25a5af4290ca675e816917f, type: 2}
+  - {fileID: 11400000, guid: f056a21ac41c25d4db04728be5add0f1, type: 2}
+  - {fileID: 11400000, guid: b3cfba2c8bb5155479743b8e38a52ab7, type: 2}
+  - {fileID: 11400000, guid: 8b475e8d53ac30b4786043a657c4b2f0, type: 2}
+  - {fileID: 11400000, guid: 212663f337c39ea42ab26a1cc98ba396, type: 2}
+  - {fileID: 11400000, guid: 5792a558764cf7849aee20ebd4f12e82, type: 2}
+  - {fileID: 11400000, guid: 10274ade5403b60488213d552984c5a1, type: 2}
+  - {fileID: 11400000, guid: a89ec7832905b7f4b861eaf8bfefd630, type: 2}
+  - {fileID: 11400000, guid: f39bbd3bedce681418727f2e615d0702, type: 2}
+  - {fileID: 11400000, guid: eeff14bd8ef598e49bfc886c5b21b128, type: 2}
 --- !u!61 &1333646536513782247
 BoxCollider2D:
   m_ObjectHideFlags: 0
