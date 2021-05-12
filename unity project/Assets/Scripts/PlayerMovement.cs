@@ -100,8 +100,8 @@ public class PlayerMovement : MonoBehaviour
         while(!isAFK) {
             if (lastPing.AddSeconds(30) < DateTime.Now) {
                 isAFK = true;
+                gameManager.StartGetLeaderboard();
                 Destroy(gameObject);
-
             }
             else {
                 yield return new WaitForSeconds(30);

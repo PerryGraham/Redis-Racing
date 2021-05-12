@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
             if (loginResponse.success) {
                 SpawnPlayer(loginResponse.name);
                 startUI.startPanel.SetActive(false);
+                StartCoroutine(GetLeaderboardData("http://localhost:80/leaderboard"));
             }
             else {
                 Popup popupBox = Instantiate(popupbox).GetComponent<Popup>();
@@ -171,6 +172,10 @@ public class GameManager : MonoBehaviour
         var leaderboard = JsonConvert.DeserializeObject<List<LeaderboardData>>(json);
         leaderboard = leaderboard.OrderBy(p => p.laptime).ToList();
         leaderboardUI.UpdateLeaderboard(leaderboard);
+    }
+
+    public void StartGetLeaderboard() {
+        StartCoroutine(GetLeaderboardData("http://localhost:80/leaderboard"));
     }
 
     public void Finish() {
