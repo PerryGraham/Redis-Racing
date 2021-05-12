@@ -36,11 +36,10 @@ public class GameManager : MonoBehaviour
 
         if (uwr.result == UnityWebRequest.Result.ConnectionError)
         {
-            //Debug.Log("Error While Sending: " + uwr.error);
+            Debug.Log("Error While Sending: " + uwr.error);
             Popup popupBox = Instantiate(popupbox).GetComponent<Popup>();
             popupBox.transform.SetParent(canvas.transform, false);
             popupBox.SetText("Cannot connect to the game server. Please try again later.");
-            SpawnPlayer("yes");
         }
         else
         {
