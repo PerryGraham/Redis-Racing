@@ -16,7 +16,8 @@
     ], // Backend technologies: "JavaScript", "Java", "Python", "Go", "C#", "Ruby", "PHP", etc. 
     "redis_commands": [
         "JSON.GET",
-        "JSON.SET"
+        "JSON.SET",
+        "JSON.DEL"
     ], // Enter all the Redis commands
     "redis_features": ["caching"],// Enter any core Redis feature or leave it blank.
     "redis_modules": ["RedisJSON"], //Value can be one or more of "RediJSON", "", "RedisTimeseries", "RedisAI"  "RedisGears" or "RedisGraph" listed in an array. 

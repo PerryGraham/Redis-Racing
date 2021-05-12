@@ -1,7 +1,12 @@
 # Redis-Racing
 
-#### Competitive web racing game powered by redis
-- The goal is to complete the track as fast as possible to set a time on the public leaderboard, no sign up required. 
+#### Competitive web racing game powered by Redis
+- The goal is to complete the track as fast as possible to set a time on the live public leaderboard, no sign up required.
+
+Play the game at [RedisRacing.com](http://redisracing.com)
+
+Created by: Graham Pinsent and Jeremy Pasquino
+
 
 [image placeholder]
 
@@ -28,3 +33,39 @@ leaderboard = {
 }
 ```
 This data is used to create a live learboard for everyone to see as they race to get the fastest time possible. When any car in the game crosses the finish line, the client requests the new leaderboard data from the server. 
+
+--------
+
+## Features
+
+#### Pick Name
+
+
+#### Update Position
+
+
+#### 
+
+
+
+
+---------
+## How to run locally
+
+Create .env file
+```
+HOST= "redis url"
+PASSWORD= "redis password
+```
+
+Run server
+
+``` 
+cd nodejs
+npm run dev
+```
+
+Launch unity project
+```
+press play button
+```
