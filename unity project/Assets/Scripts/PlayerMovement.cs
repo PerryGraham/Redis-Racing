@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 0f;
     float accSpeed = 2.5f;
     float rotSpeed = 100f;
-    //float minSpeed = -5f;
-    //float maxSpeed = 15f;
     float driftAmount = .1f;
     float movement;
     public float rotation;
@@ -30,10 +28,17 @@ public class PlayerMovement : MonoBehaviour
     public SpeedUI speedUI;
     public TimerUI timerUI;
     public Coroutine timerCoroutine;
+    public GameObject screenSpaceCanvas;
+    Tilemap track;
     GameManager gameManager;
 
     void Start() {
+        if (self) {
+            screenSpaceCanvas.SetActive(true);
+        }
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        GameObject grid = GameObject.Find("Grid");
+        track = grid.transform.Find("Track").GetComponent<Tilemap>();
     }
 
     // Update is called once per frame
@@ -69,6 +74,17 @@ public class PlayerMovement : MonoBehaviour
             float angularVel = Mathf.Lerp(0, rotSpeed, rb.velocity.magnitude / 3);
             rb.angularVelocity = rotation * -angularVel;
 
+            Vector3Int trackTilePos = track.WorldToCell(transform.position);
+            Tile trackTile = track.GetTile<Tile>(trackTilePos);
+            if (trackTile) {
+                rb.drag = .1f;
+                driftAmount = .1f;
+            }
+            else {
+                rb.drag = 1f;
+                driftAmount = .95f;
+            }
+
             // Update speed UI
             speedUI.SetSpeed(rb.velocity.magnitude);
         }
@@ -84,8 +100,8 @@ public class PlayerMovement : MonoBehaviour
         while(!isAFK) {
             if (lastPing.AddSeconds(30) < DateTime.Now) {
                 isAFK = true;
+                gameManager.StartGetLeaderboard();
                 Destroy(gameObject);
-
             }
             else {
                 yield return new WaitForSeconds(30);
@@ -103,20 +119,20 @@ public class PlayerMovement : MonoBehaviour
 
     public void ResetTimer() {
         timer = 0f;
-        }
-
+        timerUI.ResetPosition();
+    }
     public void SetName(string name) {
         playerName = name;
         nameUI.SetName(name);
-        }
+    }
     public void Restart() {
         ResetTimer();
         gameManager.RestartPlayer(this);
     }
-    Vector2 ForwardVelocity() {
+    public Vector2 ForwardVelocity() {
         return transform.up * Vector2.Dot(rb.velocity, transform.up);
     }
-    Vector2 RightVelocity() {
+    public Vector2 RightVelocity() {
         return transform.right * Vector2.Dot(rb.velocity, transform.right);
     }
 }

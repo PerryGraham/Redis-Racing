@@ -17,6 +17,11 @@ public class GameManager : MonoBehaviour
     public StartButton startUI;
     public Canvas canvas;
     public GameObject popupbox;
+    public GameObject finishPanel;
+
+    void Start() {
+        players = new List<PlayerMovement>();
+    }
 
     public IEnumerator Login(string name, string url) {
         string json = "{\"name\":\"" + name + "\"}";
@@ -31,7 +36,7 @@ public class GameManager : MonoBehaviour
 
         if (uwr.result == UnityWebRequest.Result.ConnectionError)
         {
-            //Debug.Log("Error While Sending: " + uwr.error);
+            Debug.Log("Error While Sending: " + uwr.error);
             Popup popupBox = Instantiate(popupbox).GetComponent<Popup>();
             popupBox.transform.SetParent(canvas.transform, false);
             popupBox.SetText("Cannot connect to the game server. Please try again later.");
@@ -42,6 +47,7 @@ public class GameManager : MonoBehaviour
             if (loginResponse.success) {
                 SpawnPlayer(loginResponse.name);
                 startUI.startPanel.SetActive(false);
+                StartCoroutine(GetLeaderboardData("http://localhost:80/leaderboard"));
             }
             else {
                 Popup popupBox = Instantiate(popupbox).GetComponent<Popup>();
@@ -51,12 +57,18 @@ public class GameManager : MonoBehaviour
         }
     }
     public void SpawnPlayer(string name) {
+        // Loop through all players to check if the current user already has a car
+        foreach (PlayerMovement player in players) {
+            if (player.self) {
+                return;
+            }
+        }
+
         PlayerMovement car = Instantiate(carObject, spawnPoint.position, spawnPoint.transform.rotation).GetComponent<PlayerMovement>();
         car.SetName(name);
         car.self = true;
-        players = new List<PlayerMovement>();
         players.Add(car);
-        cam.car = car.transform;
+        cam.car = car;
         car.isRacing = true;
         car.timerCoroutine = StartCoroutine(car.StartTimer());
         StartCoroutine(PostPlayerData("http://localhost:80/updatepos", car));
@@ -64,9 +76,11 @@ public class GameManager : MonoBehaviour
 
     public void RestartPlayer(PlayerMovement car) {
         StopCoroutine(car.timerCoroutine);
+        finishPanel.SetActive(false);
         car.rb.velocity = new Vector2(0,0);
         car.transform.position = spawnPoint.transform.position;
         car.transform.rotation = spawnPoint.transform.rotation;
+        cam.transform.position = car.transform.position;
         car.isRacing = true;
         car.timerCoroutine = StartCoroutine(car.StartTimer());
     }
@@ -158,6 +172,15 @@ public class GameManager : MonoBehaviour
         var leaderboard = JsonConvert.DeserializeObject<List<LeaderboardData>>(json);
         leaderboard = leaderboard.OrderBy(p => p.laptime).ToList();
         leaderboardUI.UpdateLeaderboard(leaderboard);
+    }
+
+    public void StartGetLeaderboard() {
+        StartCoroutine(GetLeaderboardData("http://localhost:80/leaderboard"));
+    }
+
+    public void Finish() {
+        finishPanel.SetActive(true);
+        StartCoroutine(finishPanel.GetComponent<FinishUI>().FadeIn());
     }
     class PlayerData {
         public string name;
