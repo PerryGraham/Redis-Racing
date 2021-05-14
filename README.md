@@ -49,7 +49,9 @@ client.json_get("players", function (err, results) {
     })
 ```
 Finally, after the validation, the server sends a success response back to the client. If the name was invalid then it sends a failure response back.
+
 #### Update Position
+
 Once the player has spawned into the game, a POST request is sent to the server every tenth of a second. The request includes their name, position, and rotation. Once the server receives the request, it adds the current time into the JSON, then sets the JSON in the redis database.
 ```javascript
 const namekey = `_${myjson.name}`
@@ -62,7 +64,9 @@ client.json_get("players", function (err, results) {
 })
 ```
 As soon as the game client receives the data, it can update all the connected players' positions.
+
 #### Leaderboard
+
 When a player finishes a lap, a POST request is sent to the server including their name and the time it took to finish the lap. The server first gets their old time from the redis database.
 ```javascript
 const namekey = `_${myjson.name}`
@@ -92,6 +96,7 @@ client.json_get("leaderboard", function( err, results) {
 The game client can then form the leaderboard with the data.
 
 #### Remove Disconnected Players
+
 Every thirty seconds, the server gets all players' JSON data from the redis database.
 ```javascript
 client.json_get("players", function (err, results) {
@@ -123,20 +128,23 @@ if (lastPing.AddSeconds(30) < DateTime.Now) {
 
 ## How to run locally
 
-Create .env file
+### In the nodejs folder:
+
+#### Create .env file
 ```
 HOST= "redis url"
 PASSWORD= "redis password
 ```
+This will hold your own redis database information
 
-Run server
-
+#### Install dependencies
+```
+npm install
+```
+#### Run server
 ``` 
-cd nodejs
-npm run dev
+node index.js
 ```
+### Launch Unity project
 
-Launch unity project
-```
-press play button
-```
+You can either build the game, or just press play inside the project.
