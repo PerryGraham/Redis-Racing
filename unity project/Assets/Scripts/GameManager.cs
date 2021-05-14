@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
             if (loginResponse.success) {
                 SpawnPlayer(loginResponse.name);
                 startUI.startPanel.SetActive(false);
-                StartCoroutine(GetLeaderboardData("http://localhost:80/leaderboard"));
+                StartCoroutine(GetLeaderboardData("http://redisracing.com:3000/leaderboard"));
             }
             else {
                 Popup popupBox = Instantiate(popupbox).GetComponent<Popup>();
@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         cam.car = car;
         car.isRacing = true;
         car.timerCoroutine = StartCoroutine(car.StartTimer());
-        StartCoroutine(PostPlayerData("http://localhost:80/updatepos", car));
+        StartCoroutine(PostPlayerData("http://redisracing.com:3000/updatepos", car));
     }
 
     public void RestartPlayer(PlayerMovement car) {
@@ -133,6 +133,7 @@ public class GameManager : MonoBehaviour
                     if (!found && !self) {
                         PlayerMovement car = Instantiate(carObject, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<PlayerMovement>();
                         players.Add(car);
+                        car.GetComponent<BoxCollider2D>().isTrigger = true;
                         car.time = 0;
                         car.SetName(player.name);
                         car.oldPos = car.transform.position;
@@ -168,19 +169,22 @@ public class GameManager : MonoBehaviour
         }
     }
     public void JsonToLeaderboard(string json) {
-        Debug.Log(json);
         var leaderboard = JsonConvert.DeserializeObject<List<LeaderboardData>>(json);
         leaderboard = leaderboard.OrderBy(p => p.laptime).ToList();
         leaderboardUI.UpdateLeaderboard(leaderboard);
     }
 
     public void StartGetLeaderboard() {
-        StartCoroutine(GetLeaderboardData("http://localhost:80/leaderboard"));
+        StartCoroutine(GetLeaderboardData("http://redisracing.com:3000/leaderboard"));
     }
 
     public void Finish() {
         finishPanel.SetActive(true);
         StartCoroutine(finishPanel.GetComponent<FinishUI>().FadeIn());
+    }
+
+    public void RemovePlayer(PlayerMovement car) {
+        players.Remove(car);
     }
     class PlayerData {
         public string name;

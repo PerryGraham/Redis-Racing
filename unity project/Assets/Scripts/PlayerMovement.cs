@@ -30,13 +30,10 @@ public class PlayerMovement : MonoBehaviour
     public Coroutine timerCoroutine;
     public GameObject screenSpaceCanvas;
     Tilemap track;
-    GameManager gameManager;
-
     void Start() {
         if (self) {
             screenSpaceCanvas.SetActive(true);
         }
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         GameObject grid = GameObject.Find("Grid");
         track = grid.transform.Find("Track").GetComponent<Tilemap>();
     }
@@ -77,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
             Vector3Int trackTilePos = track.WorldToCell(transform.position);
             Tile trackTile = track.GetTile<Tile>(trackTilePos);
             if (trackTile) {
-                rb.drag = .1f;
+                rb.drag = Mathf.Clamp(rb.drag - .01f, .1f, 1f);
                 driftAmount = .1f;
             }
             else {
@@ -100,7 +97,10 @@ public class PlayerMovement : MonoBehaviour
         while(!isAFK) {
             if (lastPing.AddSeconds(30) < DateTime.Now) {
                 isAFK = true;
+                Debug.Log("destroying");
+                GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
                 gameManager.StartGetLeaderboard();
+                gameManager.RemovePlayer(this);
                 Destroy(gameObject);
             }
             else {
@@ -127,6 +127,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void Restart() {
         ResetTimer();
+        GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         gameManager.RestartPlayer(this);
     }
     public Vector2 ForwardVelocity() {

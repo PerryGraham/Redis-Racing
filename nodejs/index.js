@@ -6,7 +6,7 @@ const
   // json = require('json')
   express = require('express')
   app = express();
-  port = 80
+  port = 3000
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
@@ -46,6 +46,6 @@ setInterval(function(){
   autoremoveplayer()
 }, 15000)
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
