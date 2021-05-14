@@ -132,8 +132,8 @@ if (lastPing.AddSeconds(30) < DateTime.Now) {
 
 #### Create .env file
 ```
-HOST= "redis url"
-PASSWORD= "redis password
+HOST=RedisUrlHere
+PASSWORD=RedisPasswordHere
 ```
 This will hold your own redis database information
 
