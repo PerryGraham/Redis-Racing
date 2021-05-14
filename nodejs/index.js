@@ -25,6 +25,17 @@ require('./updatelaptime.js')(app,client);
 require('./getleaderboard.js')(app, client);
 require('./login.js')(app,client);
 
+client.keys('*', function(err, keys) {
+  if (!keys.includes("players")){
+    console.log("Initialized players key")
+    client.json_set("players", ".", "{}")
+  }
+  if (!keys.includes("leaderboard")){
+    console.log("Initialized leaderboard key")
+    client.json_set("leaderboard", ".", "{}")
+  }
+})
+
 function autoremoveplayer(){
   client.json_get("players", function (err, results) {
     const playerdata = Object.values(JSON.parse(results))
