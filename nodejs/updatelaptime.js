@@ -21,7 +21,6 @@ module.exports = function (app, client) {
             }
         client.json_get("leaderboard", function( err, results) {
             res.send(Object.values(JSON.parse(results)))
-            // console.log(Object.values(JSON.parse(results)))
         })
         })
     })

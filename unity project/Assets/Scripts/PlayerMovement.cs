@@ -97,7 +97,6 @@ public class PlayerMovement : MonoBehaviour
         while(!isAFK) {
             if (lastPing.AddSeconds(30) < DateTime.Now) {
                 isAFK = true;
-                Debug.Log("destroying");
                 GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
                 gameManager.StartGetLeaderboard();
                 gameManager.RemovePlayer(this);
