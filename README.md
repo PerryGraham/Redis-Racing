@@ -3,12 +3,13 @@
 #### Competitive web racing game powered by Redis
 - The goal is to complete the track as fast as possible to set a time on the live public leaderboard, no sign up required.
 
-Play the game at [RedisRacing.com](http://redisracing.com)
+Play the game at [jpasqui.dev/racing](https://jpasqui.dev/racing)
 
 Created by: Graham Pinsent and Jeremy Pasquino
 
 
-[image placeholder]
+![Thumbnail](images/thumbnail.png)
+![Preview Gif](images/preview.gif)
 
 -------------
 ## How it works
