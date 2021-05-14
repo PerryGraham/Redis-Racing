@@ -18,13 +18,13 @@ public class Finish : MonoBehaviour
                 FinishData finishData = new FinishData();
                 finishData.name = player.playerName;
                 finishData.time = player.timer;
-                StartCoroutine(SendTime("http://redisracing.com:3000/finish", finishData));
+                StartCoroutine(SendTime("http://localhost:3000/finish", finishData));
                 player.timerUI.FinishTween();
                 gameManager.Finish();
             }
         }
         else {
-            StartCoroutine(gameManager.GetLeaderboardData("http://redisracing.com:3000/leaderboard"));
+            StartCoroutine(gameManager.GetLeaderboardData("http://localhost:3000/leaderboard"));
         }
     }
     

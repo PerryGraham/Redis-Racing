@@ -21,6 +21,6 @@ public class StartButton : MonoBehaviour
     }
 
     public void onClick() {
-        StartCoroutine(gameManager.Login(textBox.text, "http://redisracing.com:3000/login"));
+        StartCoroutine(gameManager.Login(textBox.text, "http://localhost:3000/login"));
     }
 }
