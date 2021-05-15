@@ -8,7 +8,7 @@ Play the game at [jpasqui.dev/racing](https://jpasqui.dev/racing)
 Created by: Graham Pinsent and Jeremy Pasquino
 
 
-![Thumbnail](images/thumbnail.png)
+![Screenshot](images/screenshot.png)
 ![Preview Gif](images/preview.gif)
 
 -------------
@@ -33,7 +33,7 @@ Once a player crosses the finish line, their time and name is sent to the server
     "_Paul" : {"name": "Paul","laptime": 45.11,"created": "2021-05-11T21:58:51.120Z"}
 }
 ```
-This data is used to create a live learboard for everyone to see as they race to get the fastest time possible. When any car in the game crosses the finish line, the client requests the new leaderboard data from the server. 
+This data is used to create a live leaderboard for everyone to see as they race to get the fastest time possible. When any car in the game crosses the finish line, the client requests the new leaderboard data from the server. 
 
 --------
 
