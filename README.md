@@ -133,6 +133,7 @@ if (lastPing.AddSeconds(30) < DateTime.Now) {
 ```
 Node.js
 Unity 2020.3.4f1
+Redis with RedisJSON module
 ```
 
 ### In the nodejs folder
