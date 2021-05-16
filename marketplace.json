@@ -1,13 +1,13 @@
 {
-    "app_name": "Redis Racing",  
-    "description": "Competitive web racing game powered by redis", 
+    "app_name": "Redis-Racing",  
+    "description": "Competitive web racing game powered by Redis", 
     "hidden": false,
     "rank": 21, 
     "type": "Full App", 
-    "contributed_by": "Redis Labs", 
+    "contributed_by": "Community", 
     "repo_url": "https://github.com/PerryGraham/Redis-Racing", 
     "download_url": "https://github.com/PerryGraham/Redis-Racing/archive/refs/heads/main.zip",
-    "hosted_url": "http://redisracing.com/", 
+    "hosted_url": "https://jpasqui.dev/racing", 
     "quick_deploy": false,
     "deploy_buttons": [],
     "language": [
@@ -21,8 +21,8 @@
     ], // Enter all the Redis commands
     "redis_features": ["caching"],// Enter any core Redis feature or leave it blank.
     "redis_modules": ["RedisJSON"], //Value can be one or more of "RediJSON", "", "RedisTimeseries", "RedisAI"  "RedisGears" or "RedisGraph" listed in an array. 
-    "app_image_urls": [],
-    "youtube_url": "", 
+    "app_image_urls": ["https://github.com/PerryGraham/Redis-Racing/blob/main/images/screenshot.png?raw=true"],
+    "youtube_url": "https://www.youtube.com/watch?v=FtI-YbQVucg", 
     "special_tags": ["videogame","web game", "racing","gaming","competitive","driving","hackathon"], 
     "verticals": ["Technology"],  
     "markdown": "https://raw.githubusercontent.com/PerryGraham/Redis-Racing/main/README.md",
