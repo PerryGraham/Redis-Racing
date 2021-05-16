@@ -18,9 +18,9 @@
         "JSON.GET",
         "JSON.SET",
         "JSON.DEL"
-    ], // Enter all the Redis commands
-    "redis_features": ["caching"],// Enter any core Redis feature or leave it blank.
-    "redis_modules": ["RedisJSON"], //Value can be one or more of "RediJSON", "", "RedisTimeseries", "RedisAI"  "RedisGears" or "RedisGraph" listed in an array. 
+    ],
+    "redis_features": ["caching"],
+    "redis_modules": ["RedisJSON"],
     "app_image_urls": ["https://github.com/PerryGraham/Redis-Racing/blob/main/images/screenshot.png?raw=true"],
     "youtube_url": "https://www.youtube.com/watch?v=FtI-YbQVucg", 
     "special_tags": ["videogame","web game", "racing","gaming","competitive","driving","hackathon"], 
