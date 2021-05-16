@@ -8,8 +8,8 @@ Play the game at [jpasqui.dev/racing](https://jpasqui.dev/racing)
 Created by: Graham Pinsent and Jeremy Pasquino
 
 
-![Screenshot](images/screenshot.png)
-![Preview Gif](images/preview.gif)
+![Screenshot](images/screenshot.png?raw=true)
+![Preview Gif](images/preview.gif?raw=true)
 
 -------------
 ## How it works
