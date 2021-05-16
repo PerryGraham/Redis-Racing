@@ -8,13 +8,13 @@ Play the game at [jpasqui.dev/racing](https://jpasqui.dev/racing)
 Created by: Graham Pinsent and Jeremy Pasquino
 
 
-![Thumbnail](images/thumbnail.png)
-![Preview Gif](images/preview.gif)
+![Screenshot](https://raw.githubusercontent.com/PerryGraham/Redis-Racing/main/images/screenshot.png)
+![Preview Gif](https://raw.githubusercontent.com/PerryGraham/Redis-Racing/main/images/preview.gif)
 
 -------------
 ## How it works
 
-Once a player selects their name and is connected to the server, their position on the map is sent to the redis database. As the player navagates through the track their position is being updated 10x/second. This is what the player data might look like: 
+Once a player selects their name and is connected to the server, their position on the map is sent to the Redis database. As the player navagates through the track their position is being updated 10x/second. This is what the player data might look like: 
 ```json
 "players" = {
     "_James" : {"name":"James","xPos":1,"yPos":10,"zRot":-90,"lastping": "2021-05-11T21:44:11.640Z"},
@@ -22,7 +22,7 @@ Once a player selects their name and is connected to the server, their position 
     "_Paul" : {"name":"Paul","xPos":-2,"yPos":180,"zRot":61,"lastping": "2021-05-11T21:45:15.110Z"}
 }
 ```
-Every time a player makes a post to the server with their new location, the response from the server includes all players current positions and data. This is then used to place everyone elses car on the track for you to see as you are driving. Linear interpolation is used to smooth the movement to make it look faster than 10 updates per second. 
+Every time a player makes a POST to the server with their new location, the response from the server includes all players current positions and data. This is then used to place everyone elses car on the track for you to see as you are driving. Linear interpolation is used to smooth the movement to make it look faster than 10 updates per second. 
 
 Once a player crosses the finish line, their time and name is sent to the server. Example of track time data:
 
@@ -33,14 +33,15 @@ Once a player crosses the finish line, their time and name is sent to the server
     "_Paul" : {"name": "Paul","laptime": 45.11,"created": "2021-05-11T21:58:51.120Z"}
 }
 ```
-This data is used to create a live learboard for everyone to see as they race to get the fastest time possible. When any car in the game crosses the finish line, the client requests the new leaderboard data from the server. 
+This data is used to create a live leaderboard for everyone to see as they race to get the fastest time possible. When any car in the game crosses the finish line, the client requests the new leaderboard data from the server. 
 
 --------
 
 ## Features
 
 #### Pick Name
-When the player first starts the game, they are prompted with an option to choose their name. Once they enter their name and press start, the game client sends a POST request to the server with their name. The server then performs various checks on the name to validate it, including checking if the name is already taken. The server gets all players' json from the redis database and pushes it into an array to loop over, checking their name against the data.
+
+When the player first starts the game, they are prompted with an option to choose their name. Once they enter their name and press start, the game client sends a POST request to the server with their name. The server then performs various checks on the name to validate it, including checking if the name is already taken. The server gets all players' JSON from the redis database and pushes it into an array to loop over, checking their name against the data.
 ```javascript
 client.json_get("players", function (err, results) {
     const currentplayers = Object.values(JSON.parse(results))
@@ -97,7 +98,7 @@ The game client can then form the leaderboard with the data.
 
 #### Remove Disconnected Players
 
-Every thirty seconds, the server gets all players' JSON data from the redis database.
+Every thirty seconds, the server gets all players' JSON data from the Redis database.
 ```javascript
 client.json_get("players", function (err, results) {
 ```
@@ -128,14 +129,21 @@ if (lastPing.AddSeconds(30) < DateTime.Now) {
 
 ## How to run locally
 
-### In the nodejs folder:
+### Prerequisites
+```
+Node.js
+Unity 2020.3.4f1
+Redis with RedisJSON module
+```
+
+### In the nodejs folder
 
 #### Create .env file
 ```
 HOST=RedisUrlHere
 PASSWORD=RedisPasswordHere
 ```
-This will hold your own redis database information
+This will hold your own Redis database information
 
 #### Install dependencies
 ```
