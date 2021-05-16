@@ -8,8 +8,8 @@ Play the game at [jpasqui.dev/racing](https://jpasqui.dev/racing)
 Created by: Graham Pinsent and Jeremy Pasquino
 
 
-![Screenshot](images/screenshot.png?raw=true)
-![Preview Gif](images/preview.gif?raw=true)
+![Screenshot](https://raw.githubusercontent.com/PerryGraham/Redis-Racing/main/images/screenshot.png)
+![Preview Gif](https://raw.githubusercontent.com/PerryGraham/Redis-Racing/main/images/preview.gif)
 
 -------------
 ## How it works
