@@ -1,6 +1,14 @@
 # Redis-Racing
 
-#### Competitive web racing game powered by Redis
+
+
+### [Gold Medal Winner 2021 Redis Hackathon](https://redis.io/blog/build-on-redis-hackathon-winners/)
+### [Featured in Official Redis Blog](https://redis.io/blog/how-to-build-a-competitive-online-racing-game-using-unity-and-redis/)
+
+-----
+
+
+### Competitive web racing game powered by Redis
 - The goal is to complete the track as fast as possible to set a time on the live public leaderboard, no sign up required.
 
 Play the game at [jpasqui.dev/racing](https://jpasqui.dev/racing)
